@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Azura · Joyas y Accesorios</title>
+  <meta name="description" content="Joyas de acero blanco para mujer: collares, aros, anillos y pulseras. Stand los domingos en Casino Magic Neuquén.">
+  <meta name="theme-color" content="#fbf7f4">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Vista previa al compartir el link (WhatsApp, Instagram, Facebook).
+       SITIO: si cambia la dirección de la página, actualizá las 2 líneas con la URL. -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Azura">
+  <meta property="og:title" content="Azura · Joyas de acero blanco">
+  <meta property="og:description" content="Collares, aros, anillos y pulseras de acero blanco. Stand todos los domingos de 15 a 22 h en Casino Magic Neuquén.">
+  <meta property="og:url" content="https://azuraaccesorios.netlify.app/">
+  <meta property="og:image" content="https://azuraaccesorios.netlify.app/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="es_AR">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="topbar">Encontranos todos los domingos de 15 a 22 h en Casino Magic Neuquén</div>
+
+  <header class="header">
+    <div class="container header__inner">
+      <button class="icon-btn menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a href="#" class="logo">Azura<span>joyas &amp; accesorios</span></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="#categorias">Categorías</a>
+        <a href="#tienda">Tienda</a>
+        <a href="#nosotras">Nosotras</a>
+        <a href="#visitanos">Visitanos</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <button class="icon-btn cart-toggle" aria-label="Abrir carrito">
+        <svg viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        <span class="cart-count" hidden>0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__text">
+          <p class="eyebrow">Nueva colección · Primavera</p>
+          <h1>Detalles que <em>brillan</em> contigo</h1>
+          <p class="lead">Joyas y accesorios diseñados para acompañarte todos los días. Piezas delicadas en acero blanco y precios pensados para vos.</p>
+          <div class="hero__actions">
+            <a href="#tienda" class="btn btn--primary">Ver colección</a>
+            <a href="#categorias" class="btn btn--ghost">Explorar categorías</a>
+          </div>
+        </div>
+        <div class="hero__art" aria-hidden="true">
+          <div class="hero__circle"></div>
+          <svg class="hero__necklace" viewBox="0 0 300 300">
+            <path d="M40 40 Q150 230 260 40" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <circle cx="150" cy="186" r="4" fill="currentColor"/>
+            <path d="M150 190 l-16 22 16 34 16-34z" fill="currentColor" opacity=".9"/>
+            <path d="M134 212 h32" stroke="var(--bg)" stroke-width="1.5"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beneficios -->
+    <section class="perks container">
+      <div class="perk"><strong>100% acero blanco</strong><span>No se oxida ni se pone negro</span></div>
+      <div class="perk"><strong>Envíos a todo el país</strong><span>Gratis desde $60.000</span></div>
+      <div class="perk"><strong>Cambios sin costo</strong><span>Hasta 30 días después</span></div>
+      <div class="perk"><strong>Packaging de regalo</strong><span>Incluido en cada pedido</span></div>
+    </section>
+
+    <!-- Categorías -->
+    <section id="categorias" class="section container">
+      <div class="section__head">
+        <p class="eyebrow">Comprá por categoría</p>
+        <h2>Encontrá tu pieza favorita</h2>
+      </div>
+      <div class="categories"></div>
+    </section>
+
+    <!-- Tienda -->
+    <section id="tienda" class="section container">
+      <div class="section__head">
+        <p class="eyebrow">Tienda</p>
+        <h2>Los más elegidos</h2>
+      </div>
+      <div class="toolbar">
+        <div class="filters" role="tablist" aria-label="Filtrar por categoría"></div>
+        <label class="sort">
+          <span>Ordenar</span>
+          <select id="sort">
+            <option value="destacados">Destacados</option>
+            <option value="precio-asc">Menor precio</option>
+            <option value="precio-desc">Mayor precio</option>
+            <option value="nombre">Nombre A–Z</option>
+          </select>
+        </label>
+      </div>
+      <div class="products" aria-live="polite"></div>
+    </section>
+
+    <!-- Nosotras -->
+    <section id="nosotras" class="about">
+      <div class="container about__inner">
+        <div class="about__art" aria-hidden="true">
+          <svg viewBox="0 0 200 200">
+            <circle cx="100" cy="112" r="52" fill="none" stroke="currentColor" stroke-width="7"/>
+            <path d="M82 58 l18-26 18 26 -18 12z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div>
+          <p class="eyebrow">Nuestra historia</p>
+          <h2>Hecho con amor, pensado para vos</h2>
+          <p>Azura nació en 2024 como un pequeño emprendimiento con una idea simple: que todas puedan tener joyas lindas, duraderas y accesibles. Hoy seleccionamos cada pieza a mano y la empacamos como si fuera un regalo, porque muchas veces lo es.</p>
+          <p>Trabajamos con acero blanco para que tus accesorios te acompañen por mucho tiempo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Acero blanco -->
+    <section id="acero" class="section container steel">
+      <div class="section__head">
+        <p class="eyebrow">Nuestro material</p>
+        <h2>¿Qué es el acero blanco?</h2>
+        <p class="steel__intro">Es un acero inoxidable de color plateado, muy resistente, que se usa en joyería por su brillo y su durabilidad. Todas las piezas de Azura están hechas en acero blanco.</p>
+      </div>
+      <div class="steel__grid">
+        <div class="steel__item">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          <strong>No se oxida</strong>
+          <span>No se pone negro ni cambia de color con el uso.</span>
+        </div>
+        <div class="steel__item">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg>
+          <strong>Resiste el agua</strong>
+          <span>Podés usarlo todos los días sin preocuparte.</span>
+        </div>
+        <div class="steel__item">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></svg>
+          <strong>Brillo duradero</strong>
+          <span>Mantiene su color plateado por mucho tiempo.</span>
+        </div>
+        <div class="steel__item">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg>
+          <strong>Fácil de cuidar</strong>
+          <span>Alcanza con limpiarlo con un paño suave y seco.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stand -->
+    <section id="visitanos" class="section container visit">
+      <div class="visit__info">
+        <p class="eyebrow">Visitanos</p>
+        <h2>Vení a conocernos en nuestro stand</h2>
+        <p>Probate las piezas, mirá todos los modelos en persona y llevate tu favorita en el momento. Tenemos collares, aros, anillos y pulseras.</p>
+        <ul class="visit__details">
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <div><strong>Todos los domingos</strong><span>de 15 a 22 h</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            <div><strong>Casino Magic Neuquén</strong><span>Neuquén capital</span></div>
+          </li>
+        </ul>
+        <a class="btn btn--primary" href="https://www.google.com/maps/search/?api=1&amp;query=Casino+Magic+Neuqu%C3%A9n" target="_blank" rel="noopener">Cómo llegar</a>
+      </div>
+      <div class="visit__gallery">
+        <img src="img/stand-1.jpg" alt="Bandeja con collares de dijes de colores en el stand de Azura" loading="lazy">
+        <img src="img/stand-2.jpg" alt="Exhibidores con aros, anillos y pulseras en el stand de Azura" loading="lazy">
+      </div>
+    </section>
+
+    <!-- Testimonios -->
+    <section class="section container">
+      <div class="section__head">
+        <p class="eyebrow">Opiniones</p>
+        <h2>Lo que dicen nuestras clientas</h2>
+      </div>
+      <div class="testimonials">
+        <blockquote><p>“Compré unos aretes para mi mamá y quedó encantada. El packaging es hermoso.”</p><cite>— Camila R.</cite></blockquote>
+        <blockquote><p>“Uso el collar todos los días hace meses y sigue impecable. Ya voy por mi tercera compra.”</p><cite>— Valentina M.</cite></blockquote>
+        <blockquote><p>“Llegó rapidísimo y la atención por WhatsApp fue súper amable. ¡Recomendadísimo!”</p><cite>— Sofía L.</cite></blockquote>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+      <div class="container newsletter__inner">
+        <div>
+          <h2>10% off en tu primera compra</h2>
+          <p>Suscribite y enterate antes que nadie de lanzamientos y promociones.</p>
+        </div>
+        <form class="newsletter__form" novalidate>
+          <label class="sr-only" for="email">Tu email</label>
+          <input id="email" type="email" placeholder="tu@email.com" required>
+          <button class="btn btn--primary" type="submit">Suscribirme</button>
+          <p class="form-msg" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contacto" class="footer">
+    <div class="container footer__inner">
+      <div>
+        <a href="#" class="logo logo--light">Azura<span>joyas &amp; accesorios</span></a>
+        <p>Joyas y accesorios para mujer.<br>Stand: Casino Magic Neuquén<br>Domingos de 15 a 22 h</p>
+      </div>
+      <div>
+        <h3>Tienda</h3>
+        <a href="#tienda">Novedades</a>
+        <a href="#categorias">Categorías</a>
+        <a href="#tienda">Más vendidos</a>
+      </div>
+      <div>
+        <h3>Ayuda</h3>
+        <a href="#">Envíos</a>
+        <a href="#">Cambios y devoluciones</a>
+        <a href="#">Cuidado de tus joyas</a>
+      </div>
+      <div>
+        <h3>Contacto</h3>
+        <a href="https://wa.me/5492995131264" target="_blank" rel="noopener">WhatsApp: 299 513-1264</a>
+        <a href="https://www.instagram.com/azura.nqn/" target="_blank" rel="noopener">Instagram: @azura.nqn</a>
+        <a href="mailto:hola@azura.com">hola@azura.com</a>
+      </div>
+    </div>
+    <p class="footer__copy container">© <span id="year"></span> Azura. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Carrito -->
+  <div class="overlay" hidden></div>
+  <aside class="cart" aria-label="Carrito de compras" aria-hidden="true">
+    <div class="cart__head">
+      <h2>Tu carrito</h2>
+      <button class="icon-btn cart-close" aria-label="Cerrar carrito">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="cart__items"></div>
+    <div class="cart__foot">
+      <div class="cart__shipping"></div>
+      <div class="cart__total"><span>Total</span><strong id="cart-total">$0</strong></div>
+      <button class="btn btn--primary btn--block checkout">Continuar con el pedido</button>
+    </div>
+
+    <!-- Paso 2: datos del pedido -->
+    <form class="order" hidden novalidate>
+      <div class="order__body">
+        <button type="button" class="order__back">← Volver al carrito</button>
+
+        <label class="field">Tu nombre
+          <input name="name" autocomplete="name" required placeholder="Nombre y apellido">
+        </label>
+
+        <fieldset class="field">
+          <legend>¿Cómo lo querés recibir?</legend>
+          <label class="option">
+            <input type="radio" name="delivery" value="retiro" checked>
+            <span><strong>Retiro en el stand</strong><small>Domingos de 15 a 22 h · Casino Magic Neuquén</small></span>
+          </label>
+          <label class="option">
+            <input type="radio" name="delivery" value="envio">
+            <span><strong>Envío a domicilio</strong><small>Coordinamos el costo por WhatsApp</small></span>
+          </label>
+        </fieldset>
+
+        <div class="order__address" hidden>
+          <label class="field">Dirección
+            <input name="address" autocomplete="street-address" placeholder="Calle, número, depto">
+          </label>
+          <label class="field">Localidad
+            <input name="city" autocomplete="address-level2" value="Neuquén">
+          </label>
+        </div>
+
+        <fieldset class="field">
+          <legend>¿Cómo vas a pagar?</legend>
+          <div class="order__pay">
+            <label class="chip-radio"><input type="radio" name="payment" value="Efectivo" checked><span>Efectivo</span></label>
+            <label class="chip-radio"><input type="radio" name="payment" value="Transferencia"><span>Transferencia</span></label>
+          </div>
+        </fieldset>
+
+        <label class="field">Comentario <small>(opcional)</small>
+          <textarea name="notes" rows="2" placeholder="Es para regalo, consulta, etc."></textarea>
+        </label>
+      </div>
+
+      <div class="cart__foot">
+        <div class="cart__total"><span>Total</span><strong id="order-total">$0</strong></div>
+        <p class="order__error" role="alert"></p>
+        <button type="submit" class="btn btn--primary btn--block">Enviar pedido por WhatsApp</button>
+      </div>
+    </form>
+  </aside>
+
+  <!-- Ficha de producto -->
+  <dialog class="pmodal" aria-labelledby="pmodal-name">
+    <button type="button" class="icon-btn pmodal__close" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="pmodal__content"></div>
+  </dialog>
+
+  <!-- Botón flotante de WhatsApp -->
+  <a class="wa-float" href="#" target="_blank" rel="noopener" aria-label="Consultanos por WhatsApp">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5A12.4 12.4 0 0 0 5.3 22.2L3.6 28.4l6.4-1.7A12.4 12.4 0 1 0 16 3.5zm0 22.6c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-3.8 1 1-3.7-.2-.4A10.2 10.2 0 1 1 16 26.1zm5.6-7.6c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.5l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5 2.5 1 3 .8 3.6.7.5 0 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.6-.4z"/></svg>
+    <span class="wa-float__label">¿Consultas?</span>
+  </a>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

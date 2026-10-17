@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <title>Azura · Panel admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin">
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">Azura<span>panel admin</span></a>
+      <div class="admin__actions">
+        <a href="index.html" class="btn btn--ghost btn--sm" target="_blank" rel="noopener">Ver tienda</a>
+        <button class="btn btn--ghost btn--sm" id="logout" hidden>Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container admin__main">
+
+    <!-- Falta configurar -->
+    <section id="view-setup" class="panel" hidden>
+      <h1>Falta conectar Supabase</h1>
+      <p>Completá <code>SUPABASE_URL</code> y <code>SUPABASE_KEY</code> en el archivo <code>config.js</code> para usar el panel.</p>
+    </section>
+
+    <!-- Login -->
+    <section id="view-login" class="panel panel--narrow" hidden>
+      <h1>Ingresar</h1>
+      <p class="muted">Usá el email y la contraseña de admin que creaste en Supabase.</p>
+      <form id="login-form" class="form">
+        <label>Email
+          <input type="email" name="email" autocomplete="username" required>
+        </label>
+        <label>Contraseña
+          <input type="password" name="password" autocomplete="current-password" required>
+        </label>
+        <button class="btn btn--primary btn--block" type="submit">Ingresar</button>
+        <p class="form-error" role="alert"></p>
+      </form>
+    </section>
+
+    <!-- Productos -->
+    <section id="view-products" hidden>
+      <div class="admin__toolbar">
+        <div>
+          <h1>Productos</h1>
+          <p class="muted" id="product-count"></p>
+        </div>
+        <div class="admin__toolbar-right">
+          <input type="search" id="search" placeholder="Buscar…" aria-label="Buscar productos">
+          <button class="btn btn--primary" id="new-product">+ Nuevo producto</button>
+        </div>
+      </div>
+      <div class="admin__list" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <!-- Editor -->
+  <dialog id="editor" class="editor">
+    <form id="product-form" class="form" method="dialog">
+      <div class="editor__head">
+        <h2 id="editor-title">Nuevo producto</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Cerrar">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+
+      <div class="editor__body">
+        <div class="photo">
+          <div class="photo__preview" id="photo-preview"><span>Sin foto</span></div>
+          <label class="btn btn--ghost btn--sm photo__btn">
+            Elegir foto
+            <input type="file" id="photo-input" accept="image/*" hidden>
+          </label>
+          <p class="hint">Ideal: foto vertical (4:5). Se achica sola antes de subirse.</p>
+        </div>
+
+        <div class="editor__fields">
+          <label>Nombre
+            <input name="name" required maxlength="80" placeholder="Collar Frutilla">
+          </label>
+          <div class="row">
+            <label>Categoría
+              <select name="category" id="category-select"></select>
+            </label>
+            <label>Etiqueta <small>(opcional)</small>
+              <input name="badge" maxlength="20" placeholder="Nuevo, Favorito…">
+            </label>
+          </div>
+          <div class="row">
+            <label>Precio
+              <input name="price" type="number" min="0" step="1" required inputmode="numeric" placeholder="12000">
+            </label>
+            <label>Precio anterior <small>(oferta)</small>
+              <input name="old_price" type="number" min="0" step="1" inputmode="numeric" placeholder="Opcional">
+            </label>
+          </div>
+          <label>Stock
+            <select name="stock_status" id="stock-select"></select>
+          </label>
+          <label>Descripción
+            <textarea name="description" rows="4" maxlength="500" placeholder="Cadena fina de acero blanco con…"></textarea>
+          </label>
+          <div class="row">
+            <label>Orden <small>(menor = primero)</small>
+              <input name="sort_order" type="number" step="1" inputmode="numeric" value="0">
+            </label>
+            <label class="check">
+              <input type="checkbox" name="visible" checked>
+              Visible en la tienda
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor__foot">
+        <p class="form-error" role="alert"></p>
+        <button type="button" class="btn btn--ghost" data-close>Cancelar</button>
+        <button type="submit" class="btn btn--primary" id="save-btn">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

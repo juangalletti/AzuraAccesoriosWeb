@@ -1,0 +1,6 @@
+# Archivos de Claude / editor (no son parte de la web)
+.claude/
+.vscode/
+Thumbs.db
+desktop.ini
+.DS_Store
