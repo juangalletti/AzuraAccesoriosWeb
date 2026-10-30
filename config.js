@@ -10,11 +10,11 @@ const FREE_SHIPPING_FROM = 60000;
 
 const CATEGORIES = [
   { id: "collares", name: "Collares" },
-  { id: "aretes", name: "Aretes" },
+  { id: "aretes", name: "Aros" },
   { id: "anillos", name: "Anillos" },
   { id: "pulseras", name: "Pulseras" },
-  { id: "bolsos", name: "Bolsos" },
-  { id: "pelo", name: "Para el pelo" }
+  { id: "pelo", name: "Para el pelo" },
+  { id: "joyeros", name: "Joyeros" }
 ];
 
 const STOCK_STATES = [

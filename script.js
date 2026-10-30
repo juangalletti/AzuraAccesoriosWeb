@@ -5,7 +5,7 @@ const ICONS = {
   aretes: '<path d="M8 3v5"/><circle cx="8" cy="12" r="4"/><path d="M17 3v8"/><path d="M17 11l-2 3 2 4 2-4z"/>',
   anillos: '<circle cx="12" cy="15" r="6"/><path d="M9.5 6.5L12 3l2.5 3.5L12 9z"/>',
   pulseras: '<ellipse cx="12" cy="12" rx="9" ry="5"/><ellipse cx="12" cy="12" rx="6" ry="2.5"/><circle cx="12" cy="17" r="1"/>',
-  bolsos: '<path d="M5 9h14l-1.5 11h-11z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/>',
+  joyeros: '<path d="M4 11h16v9H4z"/><path d="M5 11l1.5-5h11L19 11"/><path d="M10.5 14.5h3"/>',
   pelo: '<path d="M3 12c3-5 6-5 9 0s6 5 9 0"/><path d="M3 12c3 5 6 5 9 0s6-5 9 0"/>'
 };
 
