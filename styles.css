@@ -436,3 +436,8 @@ p { margin: 0 0 1em; }
 .pmodal__stock--low { color: var(--gold-dark); }
 .pmodal__stock--out { color: #9a3b3b; }
 @media (max-width: 720px) { .toast { bottom: 88px; } }
+
+/* ===== Envío gratis ===== */
+.cart__shipping-note { display: block; margin-top: .4rem; font-size: .78rem; }
+.order__ship { margin: 0; font-size: .88rem; color: var(--muted); background: var(--bg); border: 1px dashed var(--line); border-radius: 10px; padding: .7rem .9rem; }
+.order__ship strong { color: var(--ink); font-weight: 500; }

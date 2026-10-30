@@ -6,7 +6,9 @@ const SUPABASE_URL = "https://kzzflxqonistdcpgnjkm.supabase.co";
 const SUPABASE_KEY = "sb_publishable_-VtCfa0IoKlcB31UBqUtzQ_lOOrDTcT";
 
 const WHATSAPP_NUMBER = "5492995131264"; // 299 513-1264 (formato internacional: 54 9 + área + número)
-const FREE_SHIPPING_FROM = 60000;
+// Envío gratis a partir de estos montos
+const FREE_SHIPPING_NEUQUEN = 20000;   // Neuquén
+const FREE_SHIPPING_PAIS = 60000;      // resto del país
 
 const CATEGORIES = [
   { id: "collares", name: "Collares" },

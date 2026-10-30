@@ -80,7 +80,7 @@
     <!-- Beneficios -->
     <section class="perks container">
       <div class="perk"><strong>100% acero blanco</strong><span>No se oxida ni se pone negro</span></div>
-      <div class="perk"><strong>Envíos a todo el país</strong><span>Gratis desde $60.000</span></div>
+      <div class="perk"><strong>Envío gratis</strong><span>Neuquén desde $20.000<br>Resto del país desde $60.000</span></div>
       <div class="perk"><strong>Cambios sin costo</strong><span>Hasta 30 días después</span></div>
       <div class="perk"><strong>Packaging de regalo</strong><span>Incluido en cada pedido</span></div>
     </section>
@@ -279,17 +279,25 @@
           </label>
           <label class="option">
             <input type="radio" name="delivery" value="envio">
-            <span><strong>Envío a domicilio</strong><small>Coordinamos el costo por WhatsApp</small></span>
+            <span><strong>Envío a domicilio</strong><small>Gratis en Neuquén desde $20.000 · resto del país desde $60.000</small></span>
           </label>
         </fieldset>
 
         <div class="order__address" hidden>
+          <fieldset class="field">
+            <legend>¿A dónde lo enviamos?</legend>
+            <div class="order__pay">
+              <label class="chip-radio"><input type="radio" name="zone" value="neuquen" checked><span>Neuquén</span></label>
+              <label class="chip-radio"><input type="radio" name="zone" value="pais"><span>Otra localidad</span></label>
+            </div>
+          </fieldset>
           <label class="field">Dirección
             <input name="address" autocomplete="street-address" placeholder="Calle, número, depto">
           </label>
-          <label class="field">Localidad
-            <input name="city" autocomplete="address-level2" value="Neuquén">
+          <label class="field order__city" hidden>Localidad y provincia
+            <input name="city" autocomplete="address-level2" placeholder="Ej: Bariloche, Río Negro">
           </label>
+          <p class="order__ship"></p>
         </div>
 
         <fieldset class="field">

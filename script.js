@@ -208,11 +208,7 @@ function renderCart() {
       </div>`).join("")
     : `<p class="cart__empty">Tu carrito está vacío.<br>¡Descubrí nuestras piezas favoritas!</p>`;
 
-  const missing = FREE_SHIPPING_FROM - total;
-  const pct = Math.min(100, (total / FREE_SHIPPING_FROM) * 100);
-  $(".cart__shipping").innerHTML = total === 0 ? "" :
-    (missing > 0 ? `Te faltan <strong>${money(missing)}</strong> para el envío gratis` : `🎉 ¡Tenés envío gratis!`) +
-    `<div class="progress"><div style="width:${pct}%"></div></div>`;
+  $(".cart__shipping").innerHTML = total === 0 ? "" : shippingBar(total);
 
   $("#cart-total").textContent = money(total);
   $(".checkout").disabled = lines.length === 0;
@@ -227,6 +223,25 @@ function openCart(open) {
   if (open) $(".cart-close").focus();
   else showOrder(false);
 }
+
+// ===== Envío gratis =====
+// Neuquén: gratis desde FREE_SHIPPING_NEUQUEN · resto del país: desde FREE_SHIPPING_PAIS
+function shippingBar(total) {
+  const bar = goal => `<div class="progress"><div style="width:${Math.min(100, total / goal * 100)}%"></div></div>`;
+  if (total < FREE_SHIPPING_NEUQUEN) {
+    return `Te faltan <strong>${money(FREE_SHIPPING_NEUQUEN - total)}</strong> para el envío gratis en Neuquén` +
+      bar(FREE_SHIPPING_NEUQUEN) +
+      `<small class="cart__shipping-note">Resto del país: gratis desde ${money(FREE_SHIPPING_PAIS)}</small>`;
+  }
+  if (total < FREE_SHIPPING_PAIS) {
+    return `🎉 Envío gratis en Neuquén · te faltan <strong>${money(FREE_SHIPPING_PAIS - total)}</strong> para tenerlo en todo el país` +
+      bar(FREE_SHIPPING_PAIS);
+  }
+  return `🎉 ¡Tenés envío gratis a todo el país!` + bar(FREE_SHIPPING_PAIS);
+}
+
+const freeShipping = (total, zone) =>
+  total >= (zone === "neuquen" ? FREE_SHIPPING_NEUQUEN : FREE_SHIPPING_PAIS);
 
 // ===== Pedido (paso 2 del carrito) =====
 const cartTotal = () => cartLines().reduce((s, l) => s + l.qty * l.product.price, 0);
@@ -243,6 +258,8 @@ function showOrder(show) {
     $(".order__error").textContent = "";
     const saved = store.get("azura-customer", {});
     for (const key of ["name", "address", "city"]) if (saved[key] && !form[key].value) form[key].value = saved[key];
+    if (saved.zone) form.zone.value = saved.zone;
+    updateDelivery();
     form.name.focus();
   }
 }
@@ -250,8 +267,17 @@ function showOrder(show) {
 function updateDelivery() {
   const form = $(".order");
   const envio = form.delivery.value === "envio";
+  const neuquen = form.zone.value === "neuquen";
   $(".order__address").hidden = !envio;
+  $(".order__city").hidden = neuquen;
   form.address.required = envio;
+  form.city.required = envio && !neuquen;
+
+  const total = cartTotal();
+  const goal = neuquen ? FREE_SHIPPING_NEUQUEN : FREE_SHIPPING_PAIS;
+  $(".order__ship").innerHTML = freeShipping(total, form.zone.value)
+    ? `🎉 <strong>Tu envío es gratis</strong>`
+    : `Envío con costo, lo coordinamos por WhatsApp. Gratis sumando <strong>${money(goal - total)}</strong> más.`;
 }
 
 function sendOrder(e) {
@@ -262,11 +288,14 @@ function sendOrder(e) {
 
   const name = form.name.value.trim();
   const envio = form.delivery.value === "envio";
-  const address = form.address.value.trim(), city = form.city.value.trim();
+  const zone = form.zone.value;
+  const address = form.address.value.trim();
+  const city = zone === "neuquen" ? "Neuquén" : form.city.value.trim();
   if (!name) { err.textContent = "Escribí tu nombre."; return form.name.focus(); }
   if (envio && !address) { err.textContent = "Escribí la dirección de envío."; return form.address.focus(); }
+  if (envio && !city) { err.textContent = "Escribí tu localidad y provincia."; return form.city.focus(); }
   err.textContent = "";
-  store.set("azura-customer", { name, address, city });
+  store.set("azura-customer", { name, address, city: zone === "pais" ? city : "", zone });
 
   const notes = form.notes.value.trim();
   const text = [
@@ -277,8 +306,9 @@ function sendOrder(e) {
     "",
     `Nombre: ${name}`,
     envio
-      ? `Entrega: envío a ${address}${city ? `, ${city}` : ""}`
+      ? `Entrega: envío a ${address}, ${city}`
       : "Entrega: retiro en el stand (domingo, Casino Magic Neuquén)",
+    ...(envio ? [`Envío: ${freeShipping(cartTotal(), zone) ? "GRATIS" : "con costo (a coordinar)"}`] : []),
     `Pago: ${form.payment.value}`,
     ...(notes ? [`Comentario: ${notes}`] : [])
   ].join("\n");
@@ -437,7 +467,7 @@ function bindEvents() {
   document.addEventListener("keydown", e => { if (e.key === "Escape") openCart(false); });
   $(".checkout").addEventListener("click", () => showOrder(true));
   $(".order__back").addEventListener("click", () => showOrder(false));
-  $(".order").addEventListener("change", e => { if (e.target.name === "delivery") updateDelivery(); });
+  $(".order").addEventListener("change", e => { if (["delivery", "zone"].includes(e.target.name)) updateDelivery(); });
   $(".order").addEventListener("submit", sendOrder);
 
   const dlg = $(".pmodal");
