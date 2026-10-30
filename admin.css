@@ -82,3 +82,4 @@ code { background: var(--blush); padding: .1rem .4rem; border-radius: 6px; font-
   .editor__body { padding: 1rem; }
   .form .row { grid-template-columns: 1fr; }
 }
+.tag--code { background: transparent; border: 1px solid var(--line); color: var(--ink); letter-spacing: .05em; }

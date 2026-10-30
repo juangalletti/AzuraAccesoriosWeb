@@ -146,6 +146,7 @@ function renderProducts() {
       <div class="product__info">
         <span class="product__cat">${catName(p.cat)} · Acero blanco</span>
         <h3 class="product__name"><a href="#producto-${p.id}">${esc(p.name)}</a></h3>
+        <span class="product__code">Cód. ${productCode(p.cat, p.id)}</span>
         ${p.desc ? `<p class="product__desc">${esc(p.desc)}</p>` : ""}
         <div class="product__price"><strong>${money(p.price)}</strong>${p.oldPrice ? `<s>${money(p.oldPrice)}</s>` : ""}</div>
       </div>
@@ -197,6 +198,7 @@ function renderCart() {
         <div class="cart-item__media" style="background:${tone(p.id)}">${media(p)}</div>
         <div>
           <div class="cart-item__name">${esc(p.name)}</div>
+          <div class="product__code">Cód. ${productCode(p.cat, p.id)}</div>
           <div class="cart-item__price">${money(p.price)}</div>
           <div class="qty">
             <button data-qty="${p.id}" data-delta="-1" aria-label="Quitar uno">−</button>
@@ -301,7 +303,9 @@ function sendOrder(e) {
   const text = [
     "¡Hola Azura! Quiero hacer este pedido:",
     "",
-    ...lines.map(l => `• ${l.qty} x ${l.product.name} (${money(l.product.price)})`),
+    ...lines.map(l =>
+      `• ${l.qty} x ${l.product.name} · Cód. ${productCode(l.product.cat, l.product.id)} (${money(l.product.price)})\n` +
+      `   Foto: ${productUrl(l.product.id)}`),
     `Total: ${money(cartTotal())}`,
     "",
     `Nombre: ${name}`,
@@ -332,6 +336,7 @@ function openSheet(id) {
     <div class="pmodal__info">
       <span class="product__cat">${catName(p.cat)} · Acero blanco</span>
       <h2 id="pmodal-name">${esc(p.name)}</h2>
+      <span class="product__code">Código: ${productCode(p.cat, p.id)}</span>
       <div class="product__price pmodal__price"><strong>${money(p.price)}</strong>${p.oldPrice ? `<s>${money(p.oldPrice)}</s>` : ""}</div>
       ${isOut(p) ? `<p class="pmodal__stock pmodal__stock--out">Agotado por ahora · consultanos si vuelve a entrar</p>`
         : p.stock === "ultimas" ? `<p class="pmodal__stock pmodal__stock--low">¡Quedan últimas unidades!</p>` : ""}
@@ -482,7 +487,7 @@ function bindEvents() {
     if (btn.dataset.sheetShare) shareProduct(Number(btn.dataset.sheetShare));
     if (btn.dataset.sheetAsk) {
       const p = PRODUCTS.find(p => p.id === Number(btn.dataset.sheetAsk));
-      whatsapp(`¡Hola Azura! Quería consultar por el ${p.name}: ${productUrl(p.id)}`);
+      whatsapp(`¡Hola Azura! Quería consultar por el ${p.name} (Cód. ${productCode(p.cat, p.id)}): ${productUrl(p.id)}`);
     }
   });
 

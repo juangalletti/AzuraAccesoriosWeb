@@ -76,7 +76,10 @@ async function loadProducts() {
 
 function renderList() {
   const q = $("#search").value.trim().toLowerCase();
-  const list = products.filter(p => !q || p.name.toLowerCase().includes(q) || catName(p.category).toLowerCase().includes(q));
+  const list = products.filter(p => !q
+    || p.name.toLowerCase().includes(q)
+    || catName(p.category).toLowerCase().includes(q)
+    || productCode(p.category, p.id).toLowerCase().includes(q));
   const visibles = products.filter(p => p.visible).length;
   $("#product-count").textContent = `${products.length} en total · ${visibles} visibles en la tienda`;
 
@@ -91,6 +94,7 @@ function renderList() {
       <div>
         <div class="item__name">${esc(p.name)}</div>
         <div class="item__meta">
+          <span class="tag tag--code">${productCode(p.category, p.id)}</span>
           <strong>${money(p.price)}</strong>
           ${p.old_price ? `<s>${money(p.old_price)}</s>` : ""}
           <span>${esc(catName(p.category))}</span>

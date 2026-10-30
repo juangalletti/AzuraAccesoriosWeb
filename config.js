@@ -10,14 +10,19 @@ const WHATSAPP_NUMBER = "5492995131264"; // 299 513-1264 (formato internacional:
 const FREE_SHIPPING_NEUQUEN = 20000;   // Neuquén
 const FREE_SHIPPING_PAIS = 60000;      // resto del país
 
+// code: prefijo del código de producto (ej. COL-28)
 const CATEGORIES = [
-  { id: "collares", name: "Collares" },
-  { id: "aretes", name: "Aros" },
-  { id: "anillos", name: "Anillos" },
-  { id: "pulseras", name: "Pulseras" },
-  { id: "pelo", name: "Para el pelo" },
-  { id: "joyeros", name: "Joyeros" }
+  { id: "collares", name: "Collares", code: "COL" },
+  { id: "aretes", name: "Aros", code: "ARO" },
+  { id: "anillos", name: "Anillos", code: "ANI" },
+  { id: "pulseras", name: "Pulseras", code: "PUL" },
+  { id: "pelo", name: "Para el pelo", code: "PEL" },
+  { id: "joyeros", name: "Joyeros", code: "JOY" }
 ];
+
+// Código único de cada producto: prefijo de la categoría + número de producto (ej. COL-28)
+const productCode = (category, id) =>
+  `${CATEGORIES.find(c => c.id === category)?.code ?? "AZ"}-${id}`;
 
 const STOCK_STATES = [
   { id: "disponible", name: "Disponible" },
