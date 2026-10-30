@@ -183,10 +183,29 @@ function cartLines() {
     .filter(l => l.product && !isOut(l.product));
 }
 
-function renderCart() {
+// ===== Promo por cantidad =====
+const promoTier = count => PROMO.active ? PROMO.tiers.find(t => count >= t.min) : undefined;
+
+function cartSummary() {
   const lines = cartLines();
   const count = lines.reduce((s, l) => s + l.qty, 0);
-  const total = lines.reduce((s, l) => s + l.qty * l.product.price, 0);
+  const subtotal = lines.reduce((s, l) => s + l.qty * l.product.price, 0);
+  const pct = promoTier(count)?.pct ?? 0;
+  const discount = Math.round(subtotal * pct / 100);
+  return { lines, count, subtotal, pct, discount, total: subtotal - discount };
+}
+
+// Texto que invita a sumar productos para llegar al siguiente descuento
+function promoHint(count) {
+  if (!PROMO.active || !count) return "";
+  const next = [...PROMO.tiers].reverse().find(t => count < t.min);
+  if (!next) return "";
+  const n = next.min - count;
+  return `Sumá ${n} producto${n > 1 ? "s" : ""} más y llevate <strong>${next.pct}% OFF</strong>`;
+}
+
+function renderCart() {
+  const { lines, count, subtotal, pct, discount, total } = cartSummary();
 
   const badge = $(".cart-count");
   badge.textContent = count;
@@ -209,6 +228,12 @@ function renderCart() {
         <button class="cart-item__remove" data-remove="${p.id}">Quitar</button>
       </div>`).join("")
     : `<p class="cart__empty">Tu carrito está vacío.<br>¡Descubrí nuestras piezas favoritas!</p>`;
+
+  const hint = promoHint(count);
+  $(".cart__promo").innerHTML = !lines.length ? "" :
+    (pct ? `<div class="cart__row"><span>Subtotal</span><span>${money(subtotal)}</span></div>
+            <div class="cart__row cart__row--promo"><span>${PROMO.name} (${pct}% OFF)</span><span>−${money(discount)}</span></div>` : "") +
+    (hint ? `<p class="cart__hint">🎁 ${hint}</p>` : "");
 
   $(".cart__shipping").innerHTML = total === 0 ? "" : shippingBar(total);
 
@@ -246,7 +271,7 @@ const freeShipping = (total, zone) =>
   total >= (zone === "neuquen" ? FREE_SHIPPING_NEUQUEN : FREE_SHIPPING_PAIS);
 
 // ===== Pedido (paso 2 del carrito) =====
-const cartTotal = () => cartLines().reduce((s, l) => s + l.qty * l.product.price, 0);
+const cartTotal = () => cartSummary().total;
 const whatsapp = text => window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
 
 function showOrder(show) {
@@ -256,7 +281,10 @@ function showOrder(show) {
   form.hidden = !show;
   $(".cart__head h2").textContent = show ? "Tus datos" : "Tu carrito";
   if (show) {
-    $("#order-total").textContent = money(cartTotal());
+    const sum = cartSummary();
+    $("#order-total").textContent = money(sum.total);
+    $(".order__discount").innerHTML = sum.pct
+      ? `🎉 ${PROMO.name}: ${sum.pct}% OFF aplicado (ahorrás ${money(sum.discount)})` : "";
     $(".order__error").textContent = "";
     const saved = store.get("azura-customer", {});
     for (const key of ["name", "address", "city"]) if (saved[key] && !form[key].value) form[key].value = saved[key];
@@ -306,7 +334,14 @@ function sendOrder(e) {
     ...lines.map(l =>
       `• ${l.qty} x ${l.product.name} · Cód. ${productCode(l.product.cat, l.product.id)} (${money(l.product.price)})\n` +
       `   Foto: ${productUrl(l.product.id)}`),
-    `Total: ${money(cartTotal())}`,
+    ...(() => {
+      const sum = cartSummary();
+      return sum.pct
+        ? [`Subtotal: ${money(sum.subtotal)}`,
+           `${PROMO.name} (${sum.pct}% OFF): -${money(sum.discount)}`,
+           `Total: ${money(sum.total)}`]
+        : [`Total: ${money(sum.total)}`];
+    })(),
     "",
     `Nombre: ${name}`,
     envio
@@ -344,6 +379,7 @@ function openSheet(id) {
       <ul class="pmodal__facts">
         <li>Acero blanco: no se oxida ni se pone negro</li>
         <li>Retiralo en el stand los domingos o pedí envío</li>
+        ${PROMO.active ? `<li>${PROMO.name}: 2 productos 30% OFF · 4 o más 50% OFF</li>` : ""}
       </ul>
       <div class="pmodal__actions">
         <button class="btn btn--primary btn--block" data-sheet-add="${p.id}" ${isOut(p) ? "disabled" : ""}>${isOut(p) ? "Agotado" : "Agregar al carrito"}</button>
@@ -514,6 +550,10 @@ function bindEvents() {
 
 // ===== Inicio =====
 const BASE_TITLE = document.title;
+if (PROMO.active) {
+  $(".promo").hidden = false;
+  $(".topbar").textContent = $(".topbar").dataset.promoText;
+}
 $(".wa-float").href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("¡Hola Azura! Quería hacer una consulta.")}`;
 $("#year").textContent = new Date().getFullYear();
 renderCategories();

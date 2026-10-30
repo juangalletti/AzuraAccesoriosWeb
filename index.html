@@ -30,7 +30,7 @@
 </head>
 <body>
 
-  <div class="topbar">Encontranos todos los domingos de 15 a 22 h en Casino Magic Neuquén</div>
+  <div class="topbar" data-promo-text="🎉 Promo inauguración: 2 productos 30% OFF · 4 o más 50% OFF">Encontranos todos los domingos de 15 a 22 h en Casino Magic Neuquén</div>
 
   <header class="header">
     <div class="container header__inner">
@@ -74,6 +74,22 @@
             <path d="M134 212 h32" stroke="var(--bg)" stroke-width="1.5"/>
           </svg>
         </div>
+      </div>
+    </section>
+
+    <!-- Promo inauguración (se muestra si PROMO.active en config.js) -->
+    <section class="promo container" hidden>
+      <div class="promo__inner">
+        <div class="promo__text">
+          <p class="eyebrow">Promo inauguración</p>
+          <h2>Estrenamos web y lo festejamos con vos</h2>
+          <p>El descuento se aplica solo en el carrito. Combiná collares, pulseras y todo lo que quieras.</p>
+        </div>
+        <div class="promo__tiers">
+          <div class="promo__tier"><strong>30%<small>OFF</small></strong><span>llevando 2 productos</span></div>
+          <div class="promo__tier promo__tier--top"><strong>50%<small>OFF</small></strong><span>llevando 4 o más</span></div>
+        </div>
+        <a href="#tienda" class="btn btn--primary promo__cta">Elegir mis productos</a>
       </div>
     </section>
 
@@ -257,6 +273,7 @@
     </div>
     <div class="cart__items"></div>
     <div class="cart__foot">
+      <div class="cart__promo"></div>
       <div class="cart__shipping"></div>
       <div class="cart__total"><span>Total</span><strong id="cart-total">$0</strong></div>
       <button class="btn btn--primary btn--block checkout">Continuar con el pedido</button>
@@ -314,6 +331,7 @@
       </div>
 
       <div class="cart__foot">
+        <p class="order__discount"></p>
         <div class="cart__total"><span>Total</span><strong id="order-total">$0</strong></div>
         <p class="order__error" role="alert"></p>
         <button type="submit" class="btn btn--primary btn--block">Enviar pedido por WhatsApp</button>

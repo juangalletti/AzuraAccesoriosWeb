@@ -10,6 +10,17 @@ const WHATSAPP_NUMBER = "5492995131264"; // 299 513-1264 (formato internacional:
 const FREE_SHIPPING_NEUQUEN = 20000;   // Neuquén
 const FREE_SHIPPING_PAIS = 60000;      // resto del país
 
+// Promo por cantidad de productos en el carrito.
+// Para terminarla: active: false (y subir los cambios).
+const PROMO = {
+  active: true,
+  name: "Promo inauguración",
+  tiers: [               // de mayor a menor cantidad
+    { min: 4, pct: 50 }, // 4 o más productos: 50% OFF
+    { min: 2, pct: 30 }  // 2 o 3 productos: 30% OFF
+  ]
+};
+
 // code: prefijo del código de producto (ej. COL-28)
 const CATEGORIES = [
   { id: "collares", name: "Collares", code: "COL" },
