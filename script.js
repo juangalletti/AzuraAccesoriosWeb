@@ -348,7 +348,7 @@ function sendOrder(e) {
     `Nombre: ${name}`,
     envio
       ? `Entrega: envío a ${address}, ${city}`
-      : "Entrega: retiro en el stand (domingo, Casino Magic Neuquén)",
+      : "Entrega: a acordar con el vendedor",
     ...(envio ? [`Envío: ${freeShipping(cartTotal(), zone) ? "GRATIS" : "con costo (a coordinar)"}`] : []),
     `Pago: ${form.payment.value}`,
     ...(notes ? [`Comentario: ${notes}`] : [])
@@ -380,7 +380,7 @@ function openSheet(id) {
       ${p.desc ? `<p class="pmodal__desc">${esc(p.desc)}</p>` : ""}
       <ul class="pmodal__facts">
         <li>${p.material === "plata" ? "Plata: guardala seca y lejos de perfumes para que mantenga el brillo" : "Acero blanco: no se oxida ni se pone negro"}</li>
-        <li>Retiralo en el stand los domingos o pedí envío</li>
+        <li>Envío a domicilio o entrega a acordar con nosotras</li>
         ${PROMO.active ? `<li>${PROMO.name}: 2 productos 30% OFF · 4 o más 50% OFF (${PROMO.untilText})</li>` : ""}
       </ul>
       <div class="pmodal__actions">
