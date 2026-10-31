@@ -115,7 +115,9 @@ function setCategory(cat) {
 
 function renderProducts() {
   const sort = $("#sort").value;
-  let list = PRODUCTS.filter(p => activeCat === "todos" || p.cat === activeCat);
+  const material = $("#material").value;
+  let list = PRODUCTS.filter(p => (activeCat === "todos" || p.cat === activeCat)
+    && (material === "todos" || p.material === material));
   if (sort === "precio-asc") list = [...list].sort((a, b) => a.price - b.price);
   if (sort === "precio-desc") list = [...list].sort((a, b) => b.price - a.price);
   if (sort === "nombre") list = [...list].sort((a, b) => a.name.localeCompare(b.name, "es"));
@@ -126,7 +128,7 @@ function renderProducts() {
     return;
   }
   if (!list.length) {
-    $(".products").innerHTML = `<p class="empty">No hay productos en esta categoría por ahora.</p>`;
+    $(".products").innerHTML = `<p class="empty">No hay productos con este filtro por ahora.</p>`;
     return;
   }
 
@@ -144,7 +146,7 @@ function renderProducts() {
         <button class="btn btn--primary product__add" data-add="${p.id}" ${isOut(p) ? "disabled" : ""}>${isOut(p) ? "Agotado" : "Agregar al carrito"}</button>
       </div>
       <div class="product__info">
-        <span class="product__cat">${catName(p.cat)} · Acero blanco</span>
+        <span class="product__cat">${catName(p.cat)} · ${materialName(p.material)}</span>
         <h3 class="product__name"><a href="#producto-${p.id}">${esc(p.name)}</a></h3>
         <span class="product__code">Cód. ${productCode(p.cat, p.id)}</span>
         ${p.desc ? `<p class="product__desc">${esc(p.desc)}</p>` : ""}
@@ -332,7 +334,7 @@ function sendOrder(e) {
     "¡Hola Azura! Quiero hacer este pedido:",
     "",
     ...lines.map(l =>
-      `• ${l.qty} x ${l.product.name} · Cód. ${productCode(l.product.cat, l.product.id)} (${money(l.product.price)})\n` +
+      `• ${l.qty} x ${l.product.name} · Cód. ${productCode(l.product.cat, l.product.id)} · ${materialName(l.product.material)} (${money(l.product.price)})\n` +
       `   Foto: ${productUrl(l.product.id)}`),
     ...(() => {
       const sum = cartSummary();
@@ -369,7 +371,7 @@ function openSheet(id) {
   $(".pmodal__content").innerHTML = `
     <div class="pmodal__media" style="background:${tone(p.id)}">${media(p)}</div>
     <div class="pmodal__info">
-      <span class="product__cat">${catName(p.cat)} · Acero blanco</span>
+      <span class="product__cat">${catName(p.cat)} · ${materialName(p.material)}</span>
       <h2 id="pmodal-name">${esc(p.name)}</h2>
       <span class="product__code">Código: ${productCode(p.cat, p.id)}</span>
       <div class="product__price pmodal__price"><strong>${money(p.price)}</strong>${p.oldPrice ? `<s>${money(p.oldPrice)}</s>` : ""}</div>
@@ -377,9 +379,9 @@ function openSheet(id) {
         : p.stock === "ultimas" ? `<p class="pmodal__stock pmodal__stock--low">¡Quedan últimas unidades!</p>` : ""}
       ${p.desc ? `<p class="pmodal__desc">${esc(p.desc)}</p>` : ""}
       <ul class="pmodal__facts">
-        <li>Acero blanco: no se oxida ni se pone negro</li>
+        <li>${p.material === "plata" ? "Plata: guardala seca y lejos de perfumes para que mantenga el brillo" : "Acero blanco: no se oxida ni se pone negro"}</li>
         <li>Retiralo en el stand los domingos o pedí envío</li>
-        ${PROMO.active ? `<li>${PROMO.name}: 2 productos 30% OFF · 4 o más 50% OFF</li>` : ""}
+        ${PROMO.active ? `<li>${PROMO.name}: 2 productos 30% OFF · 4 o más 50% OFF (${PROMO.untilText})</li>` : ""}
       </ul>
       <div class="pmodal__actions">
         <button class="btn btn--primary btn--block" data-sheet-add="${p.id}" ${isOut(p) ? "disabled" : ""}>${isOut(p) ? "Agotado" : "Agregar al carrito"}</button>
@@ -472,6 +474,7 @@ function bindEvents() {
     if (chip) setCategory(chip.dataset.cat);
   });
   $("#sort").addEventListener("change", renderProducts);
+  $("#material").addEventListener("change", renderProducts);
 
   $(".products").addEventListener("click", e => {
     const add = e.target.closest("[data-add]");
@@ -552,8 +555,11 @@ function bindEvents() {
 const BASE_TITLE = document.title;
 if (PROMO.active) {
   $(".promo").hidden = false;
-  $(".topbar").textContent = $(".topbar").dataset.promoText;
+  $(".promo__until").textContent = `Válida ${PROMO.untilText}.`;
+  $(".topbar").textContent = `${$(".topbar").dataset.promoText} · ${PROMO.untilText}`;
 }
+$("#material").innerHTML = `<option value="todos">Todos</option>` +
+  MATERIALS.map(m => `<option value="${m.id}">${m.name}</option>`).join("");
 $(".wa-float").href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("¡Hola Azura! Quería hacer una consulta.")}`;
 $("#year").textContent = new Date().getFullYear();
 renderCategories();

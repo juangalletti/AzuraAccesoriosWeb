@@ -17,6 +17,7 @@ create table if not exists public.products (
   image_url   text,
   visible     boolean not null default true,
   stock_status text   not null default 'disponible' check (stock_status in ('disponible', 'ultimas', 'agotado')),
+  material    text    not null default 'acero' check (material in ('acero', 'plata')),
   sort_order  integer not null default 0,
   created_at  timestamptz not null default now()
 );

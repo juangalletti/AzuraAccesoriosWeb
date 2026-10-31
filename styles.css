@@ -146,6 +146,7 @@ p { margin: 0 0 1em; }
 }
 .chip:hover { border-color: var(--gold); }
 .chip[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.toolbar__selects { display: flex; gap: 1rem; flex-wrap: wrap; }
 .sort { display: flex; align-items: center; gap: .5rem; font-size: .85rem; color: var(--muted); }
 .sort select { font: inherit; color: var(--ink); padding: .45rem .8rem; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
 

@@ -11,14 +11,17 @@ const FREE_SHIPPING_NEUQUEN = 20000;   // Neuquén
 const FREE_SHIPPING_PAIS = 60000;      // resto del país
 
 // Promo por cantidad de productos en el carrito.
-// Para terminarla: active: false (y subir los cambios).
+// Se apaga sola al llegar a "until" (hora de Argentina). Para cortarla antes: enabled: false.
 const PROMO = {
-  active: true,
+  enabled: true,
+  until: "2026-11-07T00:00:00-03:00", // dura hasta el viernes 6/11 inclusive
+  untilText: "hasta el viernes 6/11",
   name: "Promo inauguración",
   tiers: [               // de mayor a menor cantidad
     { min: 4, pct: 50 }, // 4 o más productos: 50% OFF
     { min: 2, pct: 30 }  // 2 o 3 productos: 30% OFF
-  ]
+  ],
+  get active() { return this.enabled && Date.now() < Date.parse(this.until); }
 };
 
 // code: prefijo del código de producto (ej. COL-28)
@@ -34,6 +37,13 @@ const CATEGORIES = [
 // Código único de cada producto: prefijo de la categoría + número de producto (ej. COL-28)
 const productCode = (category, id) =>
   `${CATEGORIES.find(c => c.id === category)?.code ?? "AZ"}-${id}`;
+
+// El primero es el predeterminado
+const MATERIALS = [
+  { id: "acero", name: "Acero blanco" },
+  { id: "plata", name: "Plata" }
+];
+const materialName = id => (MATERIALS.find(m => m.id === id) ?? MATERIALS[0]).name;
 
 const STOCK_STATES = [
   { id: "disponible", name: "Disponible" },
@@ -57,5 +67,6 @@ const fromRow = r => ({
   oldPrice: r.old_price || undefined, badge: r.badge || undefined,
   img: r.image_url || undefined, desc: r.description || "",
   visible: r.visible, order: r.sort_order,
-  stock: r.stock_status || "disponible"   // disponible | ultimas | agotado
+  stock: r.stock_status || "disponible",  // disponible | ultimas | agotado
+  material: r.material || MATERIALS[0].id // acero | plata
 });

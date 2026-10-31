@@ -98,6 +98,7 @@ function renderList() {
           <strong>${money(p.price)}</strong>
           ${p.old_price ? `<s>${money(p.old_price)}</s>` : ""}
           <span>${esc(catName(p.category))}</span>
+          ${p.material === "plata" ? `<span class="tag">Plata</span>` : ""}
           ${p.badge ? `<span class="tag">${esc(p.badge)}</span>` : ""}
           ${p.visible ? "" : `<span class="tag tag--off">Oculto</span>`}
           ${p.stock_status === "ultimas" ? `<span class="tag tag--low">Últimas unidades</span>` : ""}
@@ -137,9 +138,11 @@ $(".admin__list").addEventListener("change", async e => {
 
 function friendlyError(error) {
   const msg = error?.message || "error desconocido";
-  return msg.includes("stock_status")
-    ? "Falta activar el stock: corré el archivo supabase/stock.sql en Supabase (SQL Editor)."
-    : "No se pudo guardar: " + msg;
+  if (msg.includes("stock_status"))
+    return "Falta activar el stock: corré el archivo supabase/stock.sql en Supabase (SQL Editor).";
+  if (msg.includes("material"))
+    return "Falta activar el material: corré el archivo supabase/material.sql en Supabase (SQL Editor).";
+  return "No se pudo guardar: " + msg;
 }
 
 $(".admin__list").addEventListener("click", async e => {
@@ -175,6 +178,7 @@ $(".admin__list").addEventListener("click", async e => {
 // ===== Editor =====
 $("#category-select").innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join("");
 $("#stock-select").innerHTML = STOCK_STATES.map(s => `<option value="${s.id}">${s.name}</option>`).join("");
+$("#material-select").innerHTML = MATERIALS.map(m => `<option value="${m.id}">${m.name}</option>`).join("");
 
 function openEditor(p = null) {
   editing = p;
@@ -190,6 +194,7 @@ function openEditor(p = null) {
   form.old_price.value = p?.old_price ?? "";
   form.description.value = p?.description ?? "";
   form.stock_status.value = p?.stock_status ?? "disponible";
+  form.material.value = p?.material ?? MATERIALS[0].id;
   form.sort_order.value = p?.sort_order ?? (products.length ? Math.max(...products.map(x => x.sort_order)) + 1 : 1);
   form.visible.checked = p?.visible ?? true;
   setPreview(p?.image_url);
@@ -274,6 +279,7 @@ $("#product-form").addEventListener("submit", async e => {
       sort_order: parseInt(form.sort_order.value, 10) || 0,
       visible: form.visible.checked,
       stock_status: form.stock_status.value,
+      material: form.material.value,
       image_url
     };
 
